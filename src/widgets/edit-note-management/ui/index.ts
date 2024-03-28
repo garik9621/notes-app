@@ -1,0 +1,1 @@
+export { default as EditNoteManagement } from './edit-note-management.vue'

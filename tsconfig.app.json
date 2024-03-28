@@ -8,12 +8,11 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@entities": ["./src/entities/*"],
-      "@features": ["./src/features/*"],
-      "@shared": ["./src/shared/*"],
-      "@pages": ["./src/pages/*"],
-      "@widgets": ["./src/widgets/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@features/*": ["./src/features/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@widgets/*": ["./src/widgets/*"],
     }
   }
 }
