@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { NoteEditForm, useNotesStore } from '@entities/note';
-import type { INoteEditFormState } from '@entities/note';
 import { updateNoteRequest } from '../api';
 import { unref, toRefs, computed } from 'vue';
 
@@ -17,7 +16,7 @@ const { updateNote: updateNoteAction, getNoteById } = useNotesStore();
 const noteTitle = computed(() => getNoteById(unref(id))?.title || '');
 const noteText = computed(() => getNoteById(unref(id))?.text || '');
 
-const updateNote = async (data: { text: string; title: string; }) => {
+const updateNote = async (data: { text: string; title: string }) => {
   // await updateNoteRequest(unref(id), data);
 
   updateNoteAction(unref(id), data);

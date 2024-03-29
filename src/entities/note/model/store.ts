@@ -13,10 +13,16 @@ export const useNotesStore = defineStore('notes', () => {
   };
 
   const deleteNote = (id: string) => {
-    items.value = unref(items).filter((item) => item.id !== id);
+    const targetItemIndex = unref(items).findIndex((item) => item.id === id);
+
+    if (targetItemIndex < 0) {
+      return;
+    }
+
+    items.value.splice(targetItemIndex, 1);
   };
 
-  const updateNote = (id: string, payload: { title: string; text: string; }) => {
+  const updateNote = (id: string, payload: { title: string; text: string }) => {
     const targetItemIndex = unref(items).findIndex((item) => item.id === id);
 
     if (targetItemIndex < 0 || !unref(items)[targetItemIndex]) {
