@@ -13,7 +13,7 @@ import { FormOutlined } from '@ant-design/icons-vue';
         >
       </a-space>
     </a-layout-header>
-    <a-layout-content style="padding: 50px">
+    <a-layout-content style="padding: 50px; width: 100%; max-width: 1200px; margin: 0 auto">
       <RouterView />
     </a-layout-content>
     <a-layout-footer></a-layout-footer>
