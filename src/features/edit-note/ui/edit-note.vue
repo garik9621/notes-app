@@ -17,8 +17,8 @@ const { updateNote: updateNoteAction, getNoteById } = useNotesStore();
 const noteTitle = computed(() => getNoteById(unref(id))?.title || '');
 const noteText = computed(() => getNoteById(unref(id))?.text || '');
 
-const updateNote = async (data: INoteEditFormState) => {
-  // const newNoteId = await updateNoteRequest(unref(id), data);
+const updateNote = async (data: { text: string; title: string; }) => {
+  // await updateNoteRequest(unref(id), data);
 
   updateNoteAction(unref(id), data);
 

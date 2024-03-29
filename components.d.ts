@@ -19,6 +19,7 @@ declare module 'vue' {
     ALayoutHeader: typeof import('ant-design-vue/es')['LayoutHeader']
     AModal: typeof import('ant-design-vue/es')['Modal']
     ASpace: typeof import('ant-design-vue/es')['Space']
+    ATextarea: typeof import('ant-design-vue/es')['Textarea']
     ATypographyTitle: typeof import('ant-design-vue/es')['TypographyTitle']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

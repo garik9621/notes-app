@@ -43,7 +43,7 @@ const handleSubmitValidForm = () => {
     </a-form-item>
 
     <a-form-item label="Note text" name="noteText" :rules="[noteTextRequired]">
-      <a-input v-model:value="formState.noteText" />
+      <a-textarea v-model:value="formState.noteText" />
     </a-form-item>
 
     <a-form-item :wrapper-col="{ offset: 8, span: 16 }">

@@ -1,0 +1,1 @@
+export { default as DeleteNoteConfirm } from './delete-note-confirm.vue'

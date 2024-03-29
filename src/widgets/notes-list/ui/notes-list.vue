@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { type INote, NoteCard, useNotesStore } from '@entities/note';
-import { EditNote } from '@features/edit-note';
 import { ref } from 'vue';
+import { NoteCard, useNotesStore } from '@entities/note';
+import { EditNote } from '@features/edit-note';
+import { DeleteNoteConfirm } from '@features/delete-note';
 
 const { items: notes } = useNotesStore();
 
 const targetNoteId = ref('');
 
+const popupComponent = ref('')
 const isOpenEditDeletePopup = ref(false);
 
 const handleDeleteNoteEvent = (id: string) => {
+  popupComponent.value = 'edit-node'
   isOpenEditDeletePopup.value = true;
   targetNoteId.value = id;
 };
 
 const handleEditNoteEvent = (id: string) => {
+  popupComponent.value = 'delete-note-confirm'
   isOpenEditDeletePopup.value = true;
   targetNoteId.value = id;
 };
@@ -39,7 +43,8 @@ const handleEditNoteEvent = (id: string) => {
   </template>
 
   <a-modal v-model:open="isOpenEditDeletePopup">
-    <edit-note :id="targetNoteId" @success="isOpenEditDeletePopup = false" />
+    <!-- TODO: разобраться, почему не подхватываются компоненты -->
+    <component :is="popupComponent" :id="targetNoteId" style="padding: 20px 20px 0" @success="isOpenEditDeletePopup = false" @cancel="isOpenEditDeletePopup = false"/>
     <template #footer></template>
   </a-modal>
 </template>

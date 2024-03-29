@@ -16,7 +16,7 @@ export const useNotesStore = defineStore('notes', () => {
     items.value = unref(items).filter((item) => item.id !== id);
   };
 
-  const updateNote = (id: string, payload: INote) => {
+  const updateNote = (id: string, payload: { title: string; text: string; }) => {
     const targetItemIndex = unref(items).findIndex((item) => item.id === id);
 
     if (targetItemIndex < 0 || !unref(items)[targetItemIndex]) {
@@ -24,6 +24,7 @@ export const useNotesStore = defineStore('notes', () => {
     }
 
     items.value[targetItemIndex] = {
+      id,
       ...payload,
     };
   };
