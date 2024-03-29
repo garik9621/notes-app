@@ -2,15 +2,27 @@
 
 Приложение заметки
 
+Приложение написано на основе FSD-архитектуры на вреймворке Vue 3 на js/ts
+
 ## Project Setup
 
 ```sh
+npm install
+
+cd server 
 npm install
 ```
 
 ### Compile and Hot-Reload for Development
 
 ```sh
+npm run dev
+```
+
+### Run server
+
+```sh
+cd server 
 npm run dev
 ```
 

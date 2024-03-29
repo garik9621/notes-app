@@ -2,74 +2,100 @@ const express = require('express');
 const app = express();
 const port = 3001;
 const fs = require('fs');
-const path = require('path');
 const bodyParser = require('body-parser');
+
+const responseFormat = {
+  success: true,
+  data: null,
+  error: null
+}
+
+const getParsedDb = () => {
+  const db = fs.readFileSync('./db.json');
+  return JSON.parse(db);
+}
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+})
 
 app.use(bodyParser.json());
 
 app.get('/notes', (req, res) => {
-  const db = fs.readFileSync('./db.json');
+  const dbParsed = getParsedDb();
+  const dbNotes = dbParsed.notes || {};
 
-  res.send(JSON.parse(db));
+  res.send({
+    ...responseFormat,
+    data: dbNotes
+  });
 });
 
 app.post('/note/add', (req, res) => {
-  const db = fs.readFileSync('./db.json');
-  const dbParsed = JSON.parse(db);
-  const requestData = req.body.data;
+  const dbParsed = getParsedDb();
+  const { title, text } = req.body;
 
-  if (typeof requestData.title !== 'string' || !requestData.title) {
-    // send error
+  if (typeof title !== 'string' || !title || typeof text !== 'string' || !text) {
+    res.status(500).send({
+      ...responseFormat,
+      success: false,
+      error: 'Data error',
+    });
   }
 
-  if (typeof requestData.text !== 'string' || !requestData.text) {
-    // send error
-  }
+  const newItemId = `${Math.floor(Math.random() * 999999)}`;
 
-  const id = '1';
-
-  const newItem = {
-    id,
-    ...req.body.data,
+  dbParsed.notes[newItemId] = {
+    id: newItemId,
+    title,
+    text,
   };
-
-  dbParsed.notes[id] = newItem;
 
   fs.writeFileSync('./db.json', JSON.stringify(dbParsed));
 
-  res.send({ id });
+  res.send({
+    ...responseFormat,
+    data: { id: newItemId }
+  });
 });
 
 app.post('/note/update', (req, res) => {
-  const db = fs.readFileSync('./db.json');
-  const dbParsed = JSON.parse(db);
-  const requestData = req.body.data;
+  const dbParsed = getParsedDb();
 
-  const targetId = req.body.data.id;
+  const { title, text, id } = req.body;
 
-  if (typeof requestData.title !== 'string' || !requestData.title) {
-    // send error
+  if (typeof title !== 'string' || !title || typeof text !== 'string' || !text) {
+    res.status(500).send({
+      ...responseFormat,
+      success: false,
+      error: 'Data error',
+    });
   }
 
-  if (typeof requestData.text !== 'string' || !requestData.text) {
-    // send error
-  }
-
-  dbParsed.notes[targetId] = requestData;
+  dbParsed.notes[id] = {
+    ...dbParsed.notes[id],
+    title,
+    text,
+  };
 
   fs.writeFileSync('./db.json', JSON.stringify(dbParsed));
 
-  res.send({ id });
+  res.send({ success: true });
 });
 
-app.delete('/note/delete', (req, res) => {
-  const db = fs.readFileSync('./db.json');
-  const dbParsed = JSON.parse(db);
+app.post('/note/delete', (req, res) => {
+  const dbParsed = getParsedDb();
 
   const targetId = req.body.id;
 
-  if (typeof dbParsed.notes[targetId] === 'undefined') {
-    // send error
+  if (typeof targetId === 'undefined' || typeof dbParsed.notes[targetId] === 'undefined') {
+    res.status(500).send({
+      ...responseFormat,
+      success: false,
+      error: 'Element doesn`t exist',
+    });
   }
 
   delete dbParsed.notes[targetId];
@@ -80,5 +106,5 @@ app.delete('/note/delete', (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
+  console.log(`App is listening port ${port}`);
 });

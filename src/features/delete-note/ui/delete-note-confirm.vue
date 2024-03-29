@@ -14,9 +14,8 @@ const { deleteNote: deleteNoteAction } = useNotesStore();
 const { id } = toRefs(props);
 
 const deleteNote = async () => {
-  //await deleteNoteRequest(unref(id))
+  await deleteNoteRequest(unref(id))
   deleteNoteAction(unref(id));
-
   emit('success');
 };
 
