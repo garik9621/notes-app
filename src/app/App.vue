@@ -1,6 +1,14 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
 import { FormOutlined } from '@ant-design/icons-vue';
+import { ref, shallowRef } from 'vue';
+
+const layoutContentStyle = {
+  padding: '50px 30px 0',
+  width: '100%',
+  maxWidth: '1200px',
+  margin: '0 auto',
+};
 </script>
 
 <template>
@@ -13,7 +21,7 @@ import { FormOutlined } from '@ant-design/icons-vue';
         >
       </a-space>
     </a-layout-header>
-    <a-layout-content style="padding: 50px; width: 100%; max-width: 1200px; margin: 0 auto">
+    <a-layout-content :style="layoutContentStyle">
       <RouterView />
     </a-layout-content>
     <a-layout-footer></a-layout-footer>

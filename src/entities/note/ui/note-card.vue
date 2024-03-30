@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { h } from 'vue';
+import { computed, h, unref } from 'vue';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
 import type { INote } from '@entities/note';
+import { Grid } from 'ant-design-vue';
 
 const emit = defineEmits(['edit', 'delete']);
 
@@ -17,6 +18,9 @@ const handleEditClickEvent = () => {
 const handleDeleteClickEvent = () => {
   emit('delete');
 };
+
+const useBreakpoint = Grid.useBreakpoint;
+const screens = useBreakpoint();
 </script>
 
 <template>
@@ -24,7 +28,7 @@ const handleDeleteClickEvent = () => {
     <template #extra>
       <a-space>
         <a-button size="small" type="primary" :icon="h(EditOutlined)" @click="handleEditClickEvent">
-          Edit note
+          {{ screens.sm ? 'Edit note' : '' }}
         </a-button>
         <a-button
           size="small"
@@ -33,7 +37,7 @@ const handleDeleteClickEvent = () => {
           :icon="h(DeleteOutlined)"
           @click="handleDeleteClickEvent"
         >
-          Delete note
+          {{ screens.sm ? 'Delete note' : '' }}
         </a-button>
       </a-space>
     </template>
