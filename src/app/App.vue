@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
+import { RouterView } from 'vue-router';
 import { FormOutlined } from '@ant-design/icons-vue';
-import { ref, shallowRef } from 'vue';
 
 const layoutContentStyle = {
   padding: '50px 30px 0',

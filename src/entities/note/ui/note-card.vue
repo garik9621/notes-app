@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, h, unref } from 'vue';
+import { h } from 'vue';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons-vue';
 import type { INote } from '@entities/note';
 import { Grid } from 'ant-design-vue';
