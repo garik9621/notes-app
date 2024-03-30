@@ -23,7 +23,7 @@ npm run dev
 
 ```sh
 cd server 
-npm run dev
+npm run start
 ```
 
 ### Type-Check, Compile and Minify for Production

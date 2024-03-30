@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { NoteEditForm, useNotesStore } from '@entities/note';
 import { updateNoteRequest } from '../api';
-import { unref, toRefs, computed } from 'vue';
+import { unref, toRefs, computed, ref } from 'vue';
 
 const emit = defineEmits(['success']);
 
@@ -16,12 +16,22 @@ const { updateNote: updateNoteAction, getNoteById } = useNotesStore();
 const noteTitle = computed(() => getNoteById(unref(id))?.title || '');
 const noteText = computed(() => getNoteById(unref(id))?.text || '');
 
+const loading = ref(false);
+
 const updateNote = async (data: { text: string; title: string }) => {
-  await updateNoteRequest(unref(id), data);
+  loading.value = true;
 
-  updateNoteAction(unref(id), data);
+  try {
+    await updateNoteRequest(unref(id), data);
 
-  emit('success');
+    updateNoteAction(unref(id), data);
+
+    emit('success');
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 
@@ -29,6 +39,7 @@ const updateNote = async (data: { text: string; title: string }) => {
   <note-edit-form
     :default-note-title="noteTitle"
     :default-note-text="noteText"
+    :loading="loading"
     @submit="updateNote"
   />
 </template>

@@ -6,6 +6,7 @@ import type { INoteEditFormState } from '../model';
 const props = defineProps<{
   defaultNoteTitle?: string;
   defaultNoteText?: string;
+  loading?: boolean;
 }>();
 
 const { defaultNoteTitle, defaultNoteText } = toRefs(props);
@@ -34,8 +35,8 @@ const handleSubmitValidForm = () => {
   <a-form
     :model="formState"
     :label-col="{ span: 8 }"
-    :wrapper-col="{ span: 16 }"
     name="editForm"
+    :wrapper-col="{ span: 16 }"
     @finish="handleSubmitValidForm"
   >
     <a-form-item label="Note name" name="noteTitle" :rules="[noteNameRequired]">
@@ -47,7 +48,7 @@ const handleSubmitValidForm = () => {
     </a-form-item>
 
     <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-      <a-button type="primary" html-type="submit">Send</a-button>
+      <a-button type="primary" html-type="submit" :loading="loading">Send</a-button>
     </a-form-item>
   </a-form>
 </template>

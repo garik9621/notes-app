@@ -1,11 +1,15 @@
-import axios from "axios";
+import axios, { type AxiosResponse } from 'axios';
 
-export const addNoteRequest = async (note: { title: string, text: string }): Promise<string> => {
+export const addNoteRequest = async (note: { title: string; text: string }): Promise<string> => {
   try {
-    const { data } = axios.post('http://localhost:3001/note/add', note)
+    const response: AxiosResponse<{ data: { id: string } }> = await axios.post(
+      'http://localhost:3001/note/add',
+      note,
+    );
 
-    return data.data.id;
-  } catch(e) {
-    console.error(e)
+    return response.data.data.id;
+  } catch (e) {
+    console.error(e);
+    throw new Error(e as string);
   }
 };

@@ -1,24 +1,34 @@
 <script setup lang="ts">
 import { NoteEditForm, useNotesStore } from '@entities/note';
-import type { INoteEditFormState } from '@entities/note';
 import { addNoteRequest } from '../api';
+import { ref } from 'vue';
 
 const emit = defineEmits(['success']);
 
 const { addNote } = useNotesStore();
 
+const loading = ref(false);
+
 const addNewNote = async (data: { title: string; text: string }) => {
-  const newNoteId = await addNoteRequest(data);
+  loading.value = true;
 
-  addNote({
-    ...data,
-    id: newNoteId,
-  });
+  try {
+    const newNoteId = await addNoteRequest(data);
 
-  emit('success');
+    addNote({
+      ...data,
+      id: newNoteId,
+    });
+
+    emit('success');
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loading.value = false;
+  }
 };
 </script>
 
 <template>
-  <note-edit-form @submit="addNewNote" />
+  <note-edit-form :loading="loading" @submit="addNewNote" />
 </template>

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia';
 import type { INote } from './INote';
 import type { Ref } from 'vue';
 import { ref, unref } from 'vue';
-import axios from "axios";
+import axios from 'axios';
 
 export const useNotesStore = defineStore('notes', () => {
   const items: Ref<INote[]> = ref([]);
@@ -11,16 +11,16 @@ export const useNotesStore = defineStore('notes', () => {
 
   const getNotes = async () => {
     try {
-      const { data } = await axios.get('http://localhost:3001/notes');
+      const { data } = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/notes`);
       const notes = data.data;
 
       Object.keys(notes).forEach((key) => items.value.push(notes[key]));
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
-  }
+  };
 
-  const addNote = async (item: INote) => {
+  const addNote = (item: INote) => {
     items.value.push(item);
   };
 

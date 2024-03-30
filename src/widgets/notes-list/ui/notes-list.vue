@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {onMounted, ref, shallowRef} from 'vue';
+import { onMounted, ref, shallowRef } from 'vue';
 import { NoteCard, useNotesStore } from '@entities/note';
 import UpdateNote from '@features/update-note/ui/update-note.vue';
 import DeleteNoteConfirm from '@features/delete-note/ui/delete-note-confirm.vue';
@@ -25,9 +25,13 @@ const handleEditNoteEvent = (id: string) => {
 };
 
 onMounted(async () => {
-  await getNotes();
-
-  loading.value = false;
+  try {
+    await getNotes();
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loading.value = false;
+  }
 });
 </script>
 
@@ -44,24 +48,24 @@ onMounted(async () => {
     <template v-else>
       <a-space direction="vertical" style="width: 100%">
         <note-card
-            v-for="{ id, title, text } in notes"
-            :key="id"
-            :title="title"
-            :text="text"
-            @delete="handleDeleteNoteEvent(id)"
-            @edit="handleEditNoteEvent(id)"
+          v-for="{ id, title, text } in notes"
+          :key="id"
+          :title="title"
+          :text="text"
+          @delete="handleDeleteNoteEvent(id)"
+          @edit="handleEditNoteEvent(id)"
         />
       </a-space>
     </template>
 
     <a-modal v-model:open="isOpenEditDeletePopup">
       <component
-          v-if="isOpenEditDeletePopup"
-          :is="popupComponent"
-          :id="targetNoteId"
-          style="padding: 20px 20px 0"
-          @success="isOpenEditDeletePopup = false"
-          @cancel="isOpenEditDeletePopup = false"
+        v-if="isOpenEditDeletePopup"
+        :is="popupComponent"
+        :id="targetNoteId"
+        style="padding: 20px 20px 0"
+        @success="isOpenEditDeletePopup = false"
+        @cancel="isOpenEditDeletePopup = false"
       />
       <template #footer></template>
     </a-modal>

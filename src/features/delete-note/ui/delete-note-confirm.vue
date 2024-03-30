@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { toRefs, unref } from 'vue';
+import { ref, toRefs, unref } from 'vue';
 import { useNotesStore } from '@entities/note';
 import { deleteNoteRequest } from '../api';
 
@@ -13,10 +13,20 @@ const { deleteNote: deleteNoteAction } = useNotesStore();
 
 const { id } = toRefs(props);
 
+const loading = ref(false);
+
 const deleteNote = async () => {
-  await deleteNoteRequest(unref(id))
-  deleteNoteAction(unref(id));
-  emit('success');
+  loading.value = true;
+
+  try {
+    await deleteNoteRequest(unref(id));
+    deleteNoteAction(unref(id));
+    emit('success');
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loading.value = false;
+  }
 };
 
 const cancelDelete = () => {
@@ -30,7 +40,7 @@ const cancelDelete = () => {
       >Are you sure you want to delete note?</a-typography-title
     >
     <a-space>
-      <a-button type="primary" danger @click="deleteNote">Yes</a-button>
+      <a-button type="primary" danger :loading="loading" @click="deleteNote">Yes</a-button>
       <a-button type="primary" @click="cancelDelete">No</a-button>
     </a-space>
   </a-space>
